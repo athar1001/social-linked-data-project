@@ -1,9 +1,4 @@
-﻿<?php
-
-
-
-
-
+<?php
 
 $url = "https://indianexpress.com/section/sports/";
 //$preg="<time>(.*?)<\/time>";
@@ -12,10 +7,8 @@ $preg="data-event-id=\"\">(.*)<\/a><\/h3><h4 class=\"m-article-landing__excerpt\
 
 $pregi="<img class=\"lazyload\" data-src=\"(.*)?w=310&#038;h=175&#038;imflag=true\"><\/picture><\/a>";
 
-
 $pregt="class=\"m-article-landing__date\">(.*)<\/time><\/div>";
 // $preg="src=(.*) onerror=\"this.parentNode.remove()\" class=\"\"><\/a><div class=\"latest-right\"><h2><a class=\"open-section\" href=(.*)>(.*)<\/a>\n<\/h2>\n<p>(.*)";
-
 
 $curl=curl_init();
 curl_setopt($curl, CURLOPT_URL, $url);
@@ -28,11 +21,8 @@ $detail['address']=$match[1];
 $detail['addres']=$match[2];
 //$address=(($detail['addressl1'][0]));
 
-
-
 preg_match_all('!'.$pregi.'!',$result,$matc);
 $detail['addre']=$matc[1];
-
 
 preg_match_all('!'.$pregt.'!',$result,$mat);
 $detail['add']=$mat[1];
@@ -40,11 +30,9 @@ $detail['add']=$mat[1];
 
 //
 
-
-
-
-
+ 
  ?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -62,10 +50,10 @@ $detail['add']=$mat[1];
     <link rel="stylesheet" href="css/ionicons.min.css" />
     <link rel="stylesheet" href="css/font-awesome.min.css" />
     <link href="css/emoji.css" rel="stylesheet">
-
+    
     <!--Google Font-->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
-
+    
     <!--Favicon-->
     <link rel="shortcut icon" type="image/png" href="images/fav.png"/>
 	</head>
@@ -79,31 +67,31 @@ $detail['add']=$mat[1];
 
           <!-- Brand and toggle get grouped for better mobile display -->
           <div class="navbar-header">
-             <a class="navbar-brand" href="main.php"><img src="images/logo.png" alt="logo" /></a>
+             <a class="navbar-brand" href="main.html"><img src="images/logo.png" alt="logo" /></a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right main-menu">
-
+           
               <li class="dropdown">
                 <a href="profile.html"/>Profile</span></a>
               </li>
-
+              
             <li class="dropdown">
-                 <a href="main.php"/>Home</span></a>
+                 <a href="main.html"/>Home</span></a>
               </li>
-
+            
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle pages" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome <span class="pf_name"></span><span><img src="images/down-arrow.png" alt="" /></span></a>
+                <a href="#" class="dropdown-toggle pages" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome Abu Yusuf<span><img src="images/down-arrow.png" alt="" /></span></a>
                 <ul class="dropdown-menu page-list">
-                  <li><a href="javascript:void(0)" id="logout">Log Out</a></li>
-
+                  <li><a href="index.html">Log Out</a></li>
+                 
                 </ul>
               </li>
 
             </ul>
-
+           
           </div><!-- /.navbar-collapse -->
         </div><!-- /.container -->
       </nav>
@@ -118,60 +106,67 @@ $detail['add']=$mat[1];
           ================================================= -->
     			<div class="col-md-3 static">
             <div class="profile-card">
-            	<img src="images/profile_img/pfpic.jpg" alt="user" class="profile-photo pf_photo" />
-            	<h5><a href="timeline.html" class="text-white pf_name"></a></h5>
-
+            	<img src="images/profile_img/pfpic.jpg" alt="user" class="profile-photo" />
+            	<h5><a href="timeline.html" class="text-white">ABU YUSUF</a></h5>
+       
             </div><!--profile card ends-->
            <ul class="nav-news-feed">
-
-              <li><i class="icon ion-ios-people"></i><div><a href="main.php">People Nearby</a></div></li>
-
+             
+              <li><i class="icon ion-ios-people"></i><div><a href="main.html">People Nearby</a></div></li>
+            
               <li><i class="icon ion-chatboxes"></i><div><a href="messages.html">Messages</a></div></li>
-               <li><i class="icon ion-ios-paper"></i><div><a href="sportsshop.html">Sports Shop</a></div></li>
-          <li><i class="icon ion-ios-paper"></i><div><a href="newsfeed.php">Sports News</a></div></li>
-            </ul><!--news-feed links ends-->s
+               <li><i class="icon ion-ios-paper"></i><div><a href="sportsshop.html">Sports Shop Nearby</a></div></li>
+          <li><i class="icon ion-ios-paper"></i><div><a href="newsfeed.html">Sports News</a></div></li>
+            </ul><!--news-feed links ends-->
            </div>
-
+          
     			<div class="col-md-7">
 
             <!-- Post Create Box
             ================================================= -->
-
+           
 
             <!-- Post Content
             ================================================= -->
             <?php
 
-            for($i=3;$i<count($detail['addre']);$i++)
+$api_url = $_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/scraping.php";
+$client = curl_init($api_url);
+curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($client);
+$output = '';
+$result = json_decode($response);
+
+	
+	
+ foreach($result as $row)
+
 {
-//$sql = "INSERT INTO menu_tbl(restaurant_name,menu_item,item_dec,item_price,last_update) VALUES ('$res_name','$iname','$ides','$iprz','$cuurentdatee')";
-$iname=addslashes(($detail['addre'][$i]));
-$tit=addslashes(($detail['address'][$i-3]));
-$txt=addslashes(($detail['addres'][$i-3]));
-$ttm=addslashes(($detail['add'][$i-3]));
+
+
 
 //echo "<br><img width=300 src=".$iname."><h3>".$tit."</h3>".$txt." - ".$ttm;
 
 
 
        echo   "<div class=\"post-content\">
-              <img src=".$iname." alt=\"post-image\" class=\"img-responsive post-image\" />
+              <img src=".$row->newsimg." alt=\"post-image\" class=\"img-responsive post-image\" />
               <div class=\"post-container\">
-
+                
                 <div class=\"post-detail\">
                   <div class=\"user-info\">
-                    <h5>".$tit."</h5>
-                    <p class=\"text-muted\">".$ttm."</p>
+                    <h5>".$row->newstitle."</h5>
+                    <p class=\"text-muted\">".$row->newstime."</p>
                   </div>
-
+               
                   <div class=\"line-divider\"></div>
                   <div class=\"post-text\">
-                    <p>".$txt."</p>
+                    <p>".$row->newsdetails."</p>
                   </div>
                   <div class=\"line-divider\"></div>
-
-
-
+                  
+                 
+                  
                 </div>
               </div>
             </div>";
@@ -179,8 +174,9 @@ $ttm=addslashes(($detail['add'][$i-3]));
 
 ?>
 
-
-
+            
+            
+           
           </div>
 
      </div>
@@ -191,17 +187,17 @@ $ttm=addslashes(($detail['add'][$i-3]));
     ================================================= -->
       <footer id="footer">
    <div class="container">
-      </div>
+      </div>   
       <div class="copyright">
         <p>One Direction © 2019. All rights reserved</p>
       </div>
 		</footer>
-
+    
     <!--preloader-->
     <div id="spinner-wrapper">
       <div class="spinner"></div>
     </div>
-
+    
     <!-- Scripts
     ================================================= -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTMXfmDn0VlqWIyoOxK8997L-amWbUPiQ&callback=initMap"></script>
@@ -210,66 +206,5 @@ $ttm=addslashes(($detail['add'][$i-3]));
     <script src="js/jquery.sticky-kit.min.js"></script>
     <script src="js/jquery.scrollbar.min.js"></script>
     <script src="js/script.js"></script>
-
-    <script src="https://solid.github.io/solid-auth-client/dist/solid-auth-client.bundle.js"></script>
-	  <script src="js/rdflib.min.js"></script>
-
-    <script>
-
-		const FOAF = $rdf.Namespace('http://xmlns.com/foaf/0.1/');
-		const VCARD = $rdf.Namespace('http://www.w3.org/2006/vcard/ns#');
-
-		const store = $rdf.graph();
-	  const fetcher = new $rdf.Fetcher(store);
-	  const updater = new $rdf.UpdateManager(store);
-
-		async function greetUser() {
-
-		  const session = await solid.auth.currentSession();
-		  // if (!session)
-		  //   alert('Hello stranger!');
-		  // else
-		  //   alert(`Hello ${session.webId}!`);
-
-			const person = session.webId;
-			//alert(person)
-
-			await fetcher.load(person);
-
-			const fullName = store.any($rdf.sym(person), FOAF('name'));
-			//alert(fullName)
-			$('.full_name').text(fullName);
-
-		  const name = store.any($rdf.sym(person), VCARD('fn'));
-			//alert(name);
-			$(".pf_name").text(name);
-
-			var hasPhoto = store.any($rdf.sym(person), VCARD('hasPhoto'));
-			photo = String(hasPhoto);
-			//alert(photo);
-			photo = photo.replace('<','').replace('>','');
-
-			$(".pf_photo").attr('src',photo);
-
-			const hasAddress = store.any($rdf.sym(person), VCARD('hasAddress'));
-			const street  = store.any($rdf.sym(hasAddress), VCARD('street-address'));
-			const region = store.any($rdf.sym(hasAddress), VCARD('region'));
-			const country = store.any($rdf.sym(hasAddress), VCARD('country-name'));
-			//alert(street + region + country);
-			const location = street + " " +  region + " " +  country;
-
-			myMap(location);
-
-		}
-		greetUser();
-
-
-		$('#logout').click(async function() {
-
-			await solid.auth.logout();
-			window.location.href = 'index.php';
-		});
-    </script>
-
   </body>
 </html>
