@@ -148,14 +148,9 @@ Please SignUp, and Transfer you from virtual world to physical world.</p>
 		// Update components to match the user's login status
 		solid.auth.trackSession(session => {
 		  const loggedIn = !!session;
-
-
-		  // $('#login').toggle(!loggedIn);
-		  // $('#logout').toggle(loggedIn);
-		  if (loggedIn) {
+		   if (loggedIn) {
 				// Use the user's WebID as default profile
-
-		    window.location.href = 'main.php?id='+ session.webId;
+		    window.location.href = 'main.php?usr_id='+ session.webId;
 		  }
 		});
 

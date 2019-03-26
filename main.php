@@ -29,8 +29,8 @@
 
 						include 'connection.php';// Database connection function
 
-					  $id = $_GET['id'].'#me';
-						$sql = "select * from  register where `web_id` ='".$id."' ";
+					  $usr_id = $_GET['usr_id'].'#me';
+						$sql = "select * from  register where `web_id` ='".$usr_id."' ";
 						$result = mysqli_query($conn,$sql);
 						$row = mysqli_fetch_array($result,MYSQLI_NUM);
 						$is_first_time = $row[2];
@@ -390,6 +390,7 @@
 			<?php if($is_first_time == 0){?>
 					//alert("dsgsdg");
 
+				 //create node in vcard
 				 let ins_age = $rdf.st(me, VCARD('age'), '', doc)
 	 			 let del_age = []
 
@@ -398,6 +399,7 @@
 	 				 else alert(message);
 	 			 })
 
+				// create node in foaf
 				let ins_hobby = $rdf.st(me, FOAF('hobby'), '', doc)
 				let del_hobby = []
 
@@ -432,7 +434,7 @@
 
 			<?php
 
-					$up_sql = "UPDATE register set `login_count`= 1 where `web_id` ='".$id."' ";
+					$up_sql = "UPDATE register set `login_count`= 1 where `web_id` ='".$usr_id."' ";
 					$result = mysqli_query($conn,$up_sql);
 				}
 			?>

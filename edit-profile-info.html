@@ -147,6 +147,12 @@
                     </div>
 										<div class="row">
                       <div class="form-group col-xs-12">
+                        <label for="email">My Interest</label>
+                        <input id="interest" class="form-control input-group-lg" type="text" name="interest" title="Enter Interest" placeholder="My Interest" value="" />
+                      </div>
+                    </div>
+										<div class="row">
+                      <div class="form-group col-xs-12">
                         <label for="age">Age</label>
                         <input id="age" class="form-control input-group-lg" type="text" name="age" title="Enter Age in Years" placeholder="Age in Year" value="" />
                       </div>
@@ -586,10 +592,15 @@
 			$("#age").val(age);
 
 			const email = store.any($rdf.sym(person), FOAF('email'));
-			$("#email").text(email);
+			//alert(email);
+			$("#email").val(email);
+
+			const interest = store.any($rdf.sym(person), FOAF('hobby'));
+			//alert(interest);
+			$("#interest").val(interest);
 
 			const about = store.any($rdf.sym(person), FOAF('about'));
-			$("#my-info").text(about);
+			$("#my-info").val(about);
 
 			const hasAddress = store.any($rdf.sym(person), VCARD('hasAddress'));
 			const sex = store.any($rdf.sym(hasAddress), VCARD('sex'));
@@ -635,10 +646,10 @@
 
 			 const session = await solid.auth.currentSession();
 
-	  	 if (!session)
-	  	   alert('Hello stranger!');
-	  	 else
-	  	   alert('Hello ${session.webId}!');
+	  	 // if (!session)
+	  	 //   alert('Hello stranger!');
+	  	 // else
+	  	 //   alert('Hello ${session.webId}!');
 
 	  	 const person = session.webId;
 	  	 //alert(person)
@@ -660,6 +671,19 @@
 				 else alert(message);
 			 })
 
+			 const interest_ol = store.any($rdf.sym(person), FOAF('hobby'));
+  		 //alert(name_ol);
+			 const interest_up = $("#interest").val();
+			 //alert(name_up);
+
+			 let interest_ins = $rdf.st(me, FOAF('hobby'), interest_up, doc)
+			 let interest_del = store.statementsMatching(me, FOAF('hobby'), interest_ol , doc) // null is wildcard
+			 updater.update(interest_del, interest_ins, (uri, ok, message) => {
+			   if (ok) console.log('Interest changed to '+ interest_up)
+				 else alert(message);
+			 })
+
+
 			 const age_ol = store.any($rdf.sym(person), VCARD('age'));
   		 //alert(name_ol);
 			 const age_up = $("#age").val();
@@ -674,7 +698,7 @@
 
 			 const sex_ol = store.any($rdf.sym(person), VCARD('sex'));
   		 //alert(sex_ol);
-			 const sex_up = $(".gen_male").val();
+			 const sex_up = $("input[name='optradio']:checked").val();
 			 //alert(sex_up);
 
 			 let sex_ins = $rdf.st(me, VCARD('sex'), sex_up, doc)
