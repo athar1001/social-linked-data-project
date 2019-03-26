@@ -128,7 +128,7 @@
                   <div class="line"></div>
                 </div>
                 <div class="edit-block">
-                  <form name="basic-info" id="basic-info" class="form-inline">
+                  <!-- <form name="basic-info" id="basic-info" class="form-inline" action="#"> -->
                     <div class="row">
                       <div class="form-group col-xs-6">
                         <label for="firstname">Name</label>
@@ -142,11 +142,18 @@
                     <div class="row">
                       <div class="form-group col-xs-12">
                         <label for="email">My email</label>
-                        <input id="email" class="form-control input-group-lg" type="text" name="Email" title="Enter Email" placeholder="My Email" value="yusuf@gmail.com" />
+                        <input id="email" class="form-control input-group-lg" type="text" name="Email" title="Enter Email" placeholder="My Email" value="" />
                       </div>
                     </div>
-                    <div class="row">
-                      <p class="custom-label"><strong>Date of Birth</strong></p>
+										<div class="row">
+                      <div class="form-group col-xs-12">
+                        <label for="age">Age</label>
+                        <input id="age" class="form-control input-group-lg" type="text" name="age" title="Enter Age in Years" placeholder="Age in Year" value="" />
+                      </div>
+                    </div>
+
+                    <!-- <div class="row">
+                      <p class="custom-label"><strong>Age</strong></p>
                       <div class="form-group col-sm-3 col-xs-6">
                         <label for="month" class="sr-only"></label>
                         <select class="form-control" id="day">
@@ -220,7 +227,7 @@
                           <option>2012</option>
                         </select>
                       </div>
-                    </div>
+                    </div> -->
                       <span class="custom-label"><strong>I am a: </strong></span>
                       <label class="radio-inline">
                         <input type="radio" class="gen_male" name="optradio" value="Male" >Male
@@ -493,11 +500,11 @@
                     <div class="row">
                       <div class="form-group col-xs-12">
                         <label for="my-info">About me</label>
-                        <textarea id="my-info" name="information" class="form-control" placeholder="Some texts about me" rows="4" cols="400">I am very much interested for outdoor games.  Its gives me sprit to do daily works and keeps free from stress.  So, I am looking for people who have interest in outdoor games  to play in nearest locations. </textarea>
+                        <textarea id="my-info" name="information" class="form-control" placeholder="Some texts about me" rows="4" cols="400"></textarea>
                       </div>
                     </div>
-                    <button class="btn btn-primary save_change">Save Changes</button>
-                  </form>
+                    <button class="btn btn-primary save_change" id="save_edit">Save Changes</button>
+                  <!-- </form> -->
                 </div>
               </div>
             </div>
@@ -576,18 +583,25 @@
 			const age = store.any($rdf.sym(person), VCARD('age'));
 			//alert(age);
 			$(".age").text(age);
+			$("#age").val(age);
+
+			const email = store.any($rdf.sym(person), FOAF('email'));
+			$("#email").text(email);
+
+			const about = store.any($rdf.sym(person), FOAF('about'));
+			$("#my-info").text(about);
 
 			const hasAddress = store.any($rdf.sym(person), VCARD('hasAddress'));
-			const locality = store.any($rdf.sym(hasAddress), VCARD('locality'));
-			//alert(locality);
-			const gen = $(".gender").text(locality);
+			const sex = store.any($rdf.sym(hasAddress), VCARD('sex'));
+			//alert(sex);
+			const gen = $(".gender").text(sex);
 			//alert(locality);
 
-			if(locality == 'Male'){
-				$(".gen_male").prop("checked", true);
+			if(gen == 'Female'){
+				$(".gen_female").prop("checked", true);
 				//alert(locality);
 			}else{
-				$(".gen_female").prop("checked", true);
+				$(".gen_male").prop("checked", true);
 			}
 
 			var hasPhoto = store.any($rdf.sym(person), VCARD('hasPhoto'));
@@ -617,14 +631,14 @@
 		greetUser();
 
 
-		 $('#firstname').blur(async function(){
+		 $('#save_edit').click(async function(){
 
 			 const session = await solid.auth.currentSession();
 
-	  	 // if (!session)
-	  	 //   alert('Hello stranger!');
-	  	 // else
-	  	 //   alert('Hello ${session.webId}!');
+	  	 if (!session)
+	  	   alert('Hello stranger!');
+	  	 else
+	  	   alert('Hello ${session.webId}!');
 
 	  	 const person = session.webId;
 	  	 //alert(person)
@@ -634,10 +648,9 @@
 
 			 const name_ol = store.any($rdf.sym(person), VCARD('fn'));
   		 //alert(name_ol);
-			 //
 			 const name_up = $("#firstname").val();
 			 //alert(name_up);
-			 //alert(doc);
+
 
 
 			 let ins = $rdf.st(me, VCARD('fn'), name_up, doc)
@@ -647,13 +660,53 @@
 				 else alert(message);
 			 })
 
-			 // let ins_age = $rdf.st(me, FOAF('gender'), 'Male', doc)
-			 // let del_age = []
-			 // //let del_age = store.statementsMatching(me, FOAF('hobby'),'', doc)
-			 // updater.update(del_age, ins_age, (uri, ok, message) => {
-			 //   if (ok) console.log('Created in FOAF '+ ins_age)
-				//  else alert(message);
-			 // })
+			 const age_ol = store.any($rdf.sym(person), VCARD('age'));
+  		 //alert(name_ol);
+			 const age_up = $("#age").val();
+			 //alert(name_up);
+
+			 let age_ins = $rdf.st(me, VCARD('age'), age_up, doc)
+			 let age_del = store.statementsMatching(me, VCARD('age'), age_ol , doc) // null is wildcard
+			 updater.update(age_del, age_ins, (uri, ok, message) => {
+			   if (ok) console.log('Age changed to '+ age_up)
+				 else alert(message);
+			 })
+
+			 const sex_ol = store.any($rdf.sym(person), VCARD('sex'));
+  		 //alert(sex_ol);
+			 const sex_up = $(".gen_male").val();
+			 //alert(sex_up);
+
+			 let sex_ins = $rdf.st(me, VCARD('sex'), sex_up, doc)
+			 let sex_del = store.statementsMatching(me, VCARD('sex'), sex_ol , doc) // null is wildcard
+			 updater.update(sex_del, sex_ins, (uri, ok, message) => {
+			   if (ok) console.log('Sex changed to '+ sex_up)
+				 else alert(message);
+			 })
+
+			 const email_ol = store.any($rdf.sym(person), FOAF('email'));
+  		 //alert(email_ol);
+			 const email_up = $("#email").val();
+			 //alert(email_up);
+
+			 let email_ins = $rdf.st(me, FOAF('email'), email_up, doc)
+			 let email_del = store.statementsMatching(me, FOAF('email'), email_ol , doc) // null is wildcard
+			 updater.update(email_del, email_ins, (uri, ok, message) => {
+			   if (ok) console.log('Email changed to '+ email_up)
+				 else alert(message);
+			 })
+
+			 const about_ol = store.any($rdf.sym(person), FOAF('about'));
+			 //alert(about_ol);
+			 const about_up = $("#my-info").val();
+			 //alert(about_up);
+
+			 let about_ins = $rdf.st(me, FOAF('about'), about_up, doc)
+			 let about_del = store.statementsMatching(me, FOAF('about'), about_ol , doc) // null is wildcard
+			 updater.update(about_del, about_ins, (uri, ok, message) => {
+				 if (ok) console.log('About changed to '+ about_up)
+				 else alert(message);
+			 })
 
 		 });
 

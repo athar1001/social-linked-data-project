@@ -360,6 +360,9 @@
 			const person = session.webId;
 			//alert(person)
 
+			const me = $rdf.sym(person);
+		  const doc = me.doc();
+
 			await fetcher.load(person);
 
 			//const fullName = store.any($rdf.sym(person), FOAF('name'));
@@ -391,26 +394,50 @@
 	 			 let del_age = []
 
 	 			 updater.update(del_age, ins_age, (uri, ok, message) => {
-	 			   if (ok) console.log('Created in Vcard '+ ins_age)
+	 			   if (ok) console.log('Created age in Vcard '+ ins_age)
 	 				 else alert(message);
 	 			 })
 
-				 let ins_hobby = $rdf.st(me, FOAF('hobby'), '', doc)
+				let ins_hobby = $rdf.st(me, FOAF('hobby'), '', doc)
 				let del_hobby = []
 
 				updater.update(del_hobby, ins_hobby, (uri, ok, message) => {
-				  if (ok) console.log('Created in FOAF '+ ins_age)
+				  if (ok) console.log('Created hobby in FOAF '+ ins_age)
 				  else alert(message);
 				})
 
+				let ins_sex = $rdf.st(me, VCARD('sex'), '', doc)
+				let del_sex = []
 
-			<?php }
+				updater.update(del_sex, ins_sex, (uri, ok, message) => {
+				  if (ok) console.log('Created Sex in Vcard '+ ins_sex)
+				  else alert(message);
+				})
+
+				let ins_about = $rdf.st(me, FOAF('about'), '', doc)
+				let del_about = []
+
+				updater.update(del_about, ins_about, (uri, ok, message) => {
+				  if (ok) console.log('Created about in FOAF '+ ins_sex)
+				  else alert(message);
+				})
+
+				let ins_email = $rdf.st(me, FOAF('email'), '', doc)
+				let del_email = []
+
+				updater.update(del_email, ins_email, (uri, ok, message) => {
+				  if (ok) console.log('Created email in FOAF '+ ins_sex)
+				  else alert(message);
+				})
+
+			<?php
 
 					$up_sql = "UPDATE register set `login_count`= 1 where `web_id` ='".$id."' ";
 					$result = mysqli_query($conn,$up_sql);
+				}
 			?>
 
-			myMap(location);
+			//myMap(location);
 
 		}
 		greetUser();
