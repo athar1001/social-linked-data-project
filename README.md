@@ -26,7 +26,7 @@ Step 6. Run the web application from the browser.
 
 Step 7. Create your account using WebID. You can get the WebID from any POD provider.
 
-Step 8. Login the application using WebID and password what you provided while creating account in POD provider.
+Step 8. Login using WebID and password what you provided while creating account in POD provider.
 
 
 ## Authors
