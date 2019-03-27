@@ -51,7 +51,7 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle pages" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome Abu Yusuf<span><img src="images/down-arrow.png" alt="" /></span></a>
                 <ul class="dropdown-menu page-list">
-                  <li><a href="index.html">Log Out</a></li>
+                  <li><a href="javascript:void(0)" id="logout">Log Out</a></li>
 
                 </ul>
               </li>
@@ -72,8 +72,8 @@
           ================================================= -->
     			<div class="col-md-3 static">
             <div class="profile-card">
-            	<img src="images/profile_img/pfpic.jpg" alt="user" class="profile-photo" />
-            	<h5><a href="timeline.html" class="text-white">ABU YUSUF</a></h5>
+							<img src="images/profile_img/pfpic.jpg" alt="user" class="profile-photo pf_photo" />
+            	<h5><a href="timeline.html" class="text-white pf_name"></a></h5>
 
             </div><!--profile card ends-->
             <ul class="nav-news-feed">
@@ -487,5 +487,61 @@
     <script src="js/jquery.scrollbar.min.js"></script>
     <script src="js/script.js"></script>
 
+		<script src="https://solid.github.io/solid-auth-client/dist/solid-auth-client.bundle.js"></script>
+	  <script src="js/rdflib.min.js"></script>
+
+    <script>
+
+		const FOAF = $rdf.Namespace('http://xmlns.com/foaf/0.1/');
+		const VCARD = $rdf.Namespace('http://www.w3.org/2006/vcard/ns#');
+
+		const store = $rdf.graph();
+	  const fetcher = new $rdf.Fetcher(store);
+	  const updater = new $rdf.UpdateManager(store);
+
+		async function greetUser() {
+
+		  const session = await solid.auth.currentSession();
+		  // if (!session)
+		  //   alert('Hello stranger!');
+		  // else
+		  //   alert(`Hello ${session.webId}!`);
+
+			const person = session.webId;
+			//alert(person)
+
+			await fetcher.load(person);
+
+
+					  const name = store.any($rdf.sym(person), VCARD('fn'));
+						//alert(name);
+						$(".pf_name").text(name);
+
+						var hasPhoto = store.any($rdf.sym(person), VCARD('hasPhoto'));
+						photo = String(hasPhoto);
+						//alert(photo);
+						photo = photo.replace('<','').replace('>','');
+
+						$(".pf_photo").attr('src',photo);
+
+			const hasAddress = store.any($rdf.sym(person), VCARD('hasAddress'));
+			const street  = store.any($rdf.sym(hasAddress), VCARD('street-address'));
+			const region = store.any($rdf.sym(hasAddress), VCARD('region'));
+			const country = store.any($rdf.sym(hasAddress), VCARD('country-name'));
+			//alert(street + region + country);
+			const location = street + " " +  region + " " +  country;
+
+			//myMap(location);
+
+		}
+		greetUser();
+
+
+		$('#logout').click(async function() {
+
+			await solid.auth.logout();
+			window.location.href = 'index.php';
+		});
+    </script>
   </body>
 </html>
