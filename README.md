@@ -13,13 +13,21 @@ Apache 2.2.33, PHP 7.2.7, MySQL 5.0.12
 ### Installing And Deployment
 
 Step 1. Install Apache 2.2.33, PHP 7.2.7, MySQL 5.0.12. Or you can install XAMPP or LAMPP. XAMPP or LAMPP must contain the specified version of Apache, PHP, and MySQL.  
+
 Step 2. Enable Curl library from php.ini file. Restart the server.
+
 Step 3. Download or clone the folder in document root directory.
+
 Step 4. Import the “sportsfolk.sql” file from db folder.
+
 Step 5. Configure the database connection from “connection.php” file.
+
 Step 6. Run the web application from the browser.
+
 Step 7. Create your account using WebID. You can get the WebID from any POD provider.
+
 Step 8. Login the application using WebID and password what you provided while creating account in POD provider.
+
 
 ## Authors
 
