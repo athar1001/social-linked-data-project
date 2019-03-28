@@ -16,9 +16,9 @@ Step 1. Install Apache 2.2.33, PHP 7.2.7, MySQL 5.0.12. Or you can install XAMPP
 
 Step 2. Enable Curl library from php.ini file. Restart the server.
 
-Step 3. Download or clone the sportsfolk (https://github.com/mayusuf/sportsfolk) in document root directory.
+Step 3. Download or clone the sportsfolk from https://github.com/mayusuf/sportsfolk in document root directory.
 
-Step 4. Import the “sportsfolk.sql” file from db folder.
+Step 4. Import the sql file,“sportsfolk.sql”, from db folder.
 
 Step 5. Configure the database connection from “connection.php” file.
 
